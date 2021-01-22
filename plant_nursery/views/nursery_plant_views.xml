@@ -8,5 +8,5 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Plants" id="nursery_plant_menu" parent="nursery_root_menu" sequence="1" action="action_nursery_plants"/>
+    <menuitem name="Plants" id="nursery_plant_menu" parent="nursery_root_menu" sequence="1" action="action_nursery_plant"/>
 </odoo>
