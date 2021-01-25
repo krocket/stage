@@ -1,28 +1,12 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Plant Nursery',
+    'name': 'Plan nursery',
     'version': '1.0',
     'category': 'Tools',
     'summary': 'Plants and Customers Management',
-    'depends': ['web', 'mail', 'sms', 'documents', 'rating', 'utm', 'website', 'portal'],
+    'depends': ['web'],
     'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'views/assets.xml',
-        'views/nursery_menus.xml',
-        'views/nursery_plant_views.xml',
-        'views/nursery_customer_views.xml',
-        'views/nursery_order_views.xml',
-        'views/rating_rating_views.xml',
-        'views/nursery_plant_templates.xml',
-        'views/nursery_plant_quote_ask.xml',
-        'views/nursery_order_portal_templates.xml',
-        'data/ir_sequence_data.xml',
-        'data/mail_template_data.xml',
-        'data/plant_data.xml',
-        'data/documents_data.xml',
     ],
     'demo': [
     ],
