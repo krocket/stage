@@ -23,6 +23,7 @@
                             <group>
                                 <!--price est un des champs renseigné dans le model plant.py-->
                                 <field name="price"/>
+                                <field name="order_count"/>
                             </group>
                         </page>
                         <page string="Orders">
