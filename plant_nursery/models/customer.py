@@ -4,7 +4,7 @@ from odoo import fields, models
 
 
 class Customer(models.Model):
-    _name = 'nusrsery.customer'
+    _name = 'nursery.customer'
     _description = 'Nursery Customer'
 
     name = fields.Char("Customer Name", required=True)
