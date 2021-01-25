@@ -7,6 +7,7 @@
     'summary': 'Plants and Customers Management',
     'depends': ['web'],
     'data': [
+        'security/ir.model.access.csv',
     ],
     'demo': [
     ],
