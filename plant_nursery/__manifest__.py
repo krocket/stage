@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Plan nursery',
+    'name': 'Plant nursery',
     'version': '1.0',
     'category': 'Tools',
     'summary': 'Plants and Customers Management',
@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'views/nursery_plant_views.xml',
         'views/nursery_customer_views.xml',
+        'views/nursery_order_views.xml',
     ],
     'demo': [
     ],
