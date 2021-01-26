@@ -10,7 +10,7 @@
         'data/base_data.xml',
         'data/customer_data.xml',
         'data/plant_data.xml',
-        'data/order_data.xml',
+        #'data/order_data.xml',
     ],
     'demo': [
     ],
