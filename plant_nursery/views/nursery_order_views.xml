@@ -15,7 +15,7 @@
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="Customer Name"/>
+                            <field name="name" placeholder="Customer Name" readonly="1"/>
                         </h1>
                     </div>
                     <group>
@@ -37,6 +37,10 @@
                         </tree>
                     </field>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
