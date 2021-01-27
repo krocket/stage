@@ -9,7 +9,9 @@ from odoo.exceptions import UserError
 class Order(models.Model):
     _name = 'nursery.order'
     _description = 'Nursery Order'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin']
+    #
+    #La classe utm.mixin peut être utilisée pour suivre les campagnes de marketing/communication en ligne grâce à des arguments dans les liens vers des ressources spécifiques.
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'rating.mixin', 'utm.mixin']
 
     name = fields.Char('Reference', default=lambda self: _('New'), required=True,
                        states={'draft': [('readonly', False)]})
