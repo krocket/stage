@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
+from odoo.addons.http_routing.models.ir_http import slug
 from odoo.exceptions import UserError
 
 
@@ -24,7 +25,7 @@ class Tag(models.Model):
 class Plants(models.Model):
     _name = 'nursery.plant'
     _description = 'Nursery Plant'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'website.seo.metadata', 'website.published.mixin']
 
     name = fields.Char("Plant Name", required=True)
     price = fields.Float()
@@ -52,3 +53,9 @@ class Plants(models.Model):
         for plant in self:
             if plant.number_in_stock < 0:
                 raise UserError(_('Stock cannot be negative.'))
+
+    def _compute_website_url(self):
+        super(Plants, self)._compute_website_url()
+        for plant in self:
+            if plant.id:
+                plant.website_url = '/plant/%s' % slug(plant)
