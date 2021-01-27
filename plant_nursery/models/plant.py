@@ -41,6 +41,7 @@ class Plants(models.Model):
         index=True, required=True,
         default=lambda self: self.env.user
     )
+    internal = fields.Boolean('Internal')
 
     def _compute_order_count(self):
         for plant in self:
