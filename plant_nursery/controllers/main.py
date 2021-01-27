@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import random
+import werkzeug
 
 from odoo.http import Controller, request, route
 
