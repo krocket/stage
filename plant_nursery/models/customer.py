@@ -12,4 +12,6 @@ class Customer(models.Model):
     email = fields.Char(help='To receive the newsletter')
     image = fields.Binary('Photo', attachment=True)
     address = fields.Char('Address')
+    #Les champs Many2One doivent obligatoirement avoir _id
     country_id = fields.Many2one('res.country', string='Country')
+    partner_id = fields.Many2one('res.partner', string='Company')

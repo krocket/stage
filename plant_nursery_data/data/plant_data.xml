@@ -253,6 +253,7 @@
                 </div>
             </field>
         </record>
+        <!--RECORD SUR LES MAILS-->
         <record id="plant_6_act_0" model="mail.activity">
             <field name="summary">Send beautiful email</field>
             <field name="res_model_id" ref="plant_nursery.model_nursery_plant"/>

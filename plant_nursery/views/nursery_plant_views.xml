@@ -21,11 +21,13 @@
                 <filter string="Activities Todo" name="activities_my"
                         domain="[('activity_ids.user_id', '=', uid)]"/>
                 <separator/>
+                <!--&lt; veut dire < plus petit que-->
                 <filter string="Late Activities" name="activities_overdue"
                         domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                         help="Show all opportunities for which the next action date is before today"/>
                 <filter string="Today Activities" name="activities_today"
                         domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <!--&gt; veut dire > plus grand que-->
                 <filter string="Future Activities" name="activities_upcoming_all"
                     domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
                     ]"/>
