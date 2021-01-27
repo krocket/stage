@@ -78,7 +78,7 @@ class Order(models.Model):
                 'mail.mail_activity_data_todo',
                 #TODO ICI BASE.USER.DEMO
                 #user_id=res.user_id.id
-                user_id=self.env.ref('base.user_demo').id,
+                user_id=self.env.ref('base.user_demo').id, #le base.user_demo est un external id qu'on retrouve dans les users de odoo 
                 date_deadline=fields.Date.today() + relativedelta(days=1),
                 summary=_('Pack the order')
             )
