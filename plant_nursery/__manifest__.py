@@ -2,7 +2,7 @@
 
 {
     'name': 'Plant nursery',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Tools',
     'summary': 'Plants and Customers Management',
     'depends': ['web', 'mail', 'rating', 'utm', 'website', 'portal'],
