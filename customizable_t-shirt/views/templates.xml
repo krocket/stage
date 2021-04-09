@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="0">
+        <template id="assets_frontend" inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/customizable_t-shirt/static/src/css/customisable_t-shirt.css"/>
+            </xpath>
+            <xpath expr="//script[last()]" position="after">
+                <script type="text/javascript" src="/customizable_t-shirt/static/lib/fabric.min.js"></script>
+                <script type="text/javascript"
+                        src="/customizable_t-shirt/static/src/js/customisable_t-shirt.js"></script>
+            </xpath>
+        </template>
+
+        <template id="customizable_t-shirt_page" name="Customization T-shirt Page">
+            <t t-call="website.layout">
+                <div class="row oe_customisable_t-shirt">
+                    <div class="col-md-6 col-xl-8">
+                        <t t-call="customizable_t-shirt.customisable_t-shirt"></t>
+                    </div>
+                    <div class="col-md-6 col-xl-4">
+                        <h1 itemprop="name" t-field="product.name">Product Name</h1>
+                        <label for="tshirt-design">T-Shirt Design:</label>
+                        <select id="tshirt-design">
+                            <option value="">Select one of our designs ...</option>
+                            <option value="https://cdn.ourcodeworld.com/public-media/gallery/gallery-5d5b0e95d294c.png">
+                                Batman</option>
+                            <option value="/customizable_t-shirt/static/img/batman.png">Batman</option>
+                        </select>
+                        <br/>
+                        <label for="tshirt-custompicture">Upload your own design:</label>
+                        <input type="file" id="tshirt-custompicture"/>
+                        <br/>
+                        <input id="input-text" type="text" placeholder="Entrez un texte"/>
+                        <a id="btn-text" class="btn btn-secondary ml-2">Add Text</a>
+                        <br/>
+                        <input id="input-colour" type="text" placeholder="Entrez un couleur (ex: #FF0000)"/>
+                        <a id="btn-colour" class="btn btn-primary ml-2">Add Colour</a>
+                        <br/>
+                        <label for="select-font-text">Change font:</label>
+                        <select id="select-font-text">
+                            <option value="">Select one of our fonts ...</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Tahoma">Tahoma</option>
+                            <option value="Garamond">Garamond</option>
+                        </select>
+                        <div class="btn-group">
+                            <a id="btn-clear-all" class="btn btn-primary ml-2">Clear</a>
+                            <a id="btn-clear-selected" class="btn btn-primary ml-2">Clear selected object</a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="customizable_t-shirt.customisable_t-shirt" name="Customizable T-shirt">
+            <div id="t-shirt-div">
+                <span t-field="product.image_1920" t-options="{'widget': 'image'}"/>
+                <div id="drawingArea" class="drawing-area">
+                    <div class="canvas-container">
+                        <canvas id="tshirt-canvas" width="200" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>
