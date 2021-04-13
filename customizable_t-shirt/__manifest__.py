@@ -11,6 +11,9 @@
     'category': 'tools',
     'version': '1.0',
     'depends': ['website', 'website_sale'],
-    'data': ['views/templates.xml'],
+    'data': [
+        'views/sale_views.xml',
+        'views/templates.xml',
+    ],
     'installable': True,
 }

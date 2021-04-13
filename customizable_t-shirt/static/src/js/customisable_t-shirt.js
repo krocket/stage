@@ -1,7 +1,10 @@
 odoo.define('customisable_t-shirt.customisable_t-shirt', (require) => {
     'use strict';
 
+    const core = require('web.core');
+    const config = require('web.config');
     const publicWidget = require('web.public.widget');
+    require("web.zoomodoo");
 
     publicWidget.registry.CustomisableTShirt = publicWidget.Widget.extend({
         selector: '.oe_customisable_t-shirt',
@@ -12,9 +15,12 @@ odoo.define('customisable_t-shirt.customisable_t-shirt', (require) => {
             'click #btn-clear-all': '_onClickClearAll',
             'click #btn-clear-selected': '_onClickClearSelected',
             'click #btn-text': '_onClickBtnText',
+            'click #btn-bold': '_onClickBtnBold',
+            'click #btn-italic': '_onClickBtnItalic',
             'click #btn-colour': '_onClickBtnColour',
+            'click input[id="btn-save"]': '_onClickBtnSave',
         },
-        jsLibs: ['/customizable_t-shirt/static/lib/fabric.min.js'],
+        jsLibs: ['/customizable_t-shirt/static/lib/fabric.min.js', '/customizable_t-shirt/static/lib/dom-to-image.min.js'],
 
         init: function () {
             this._super.apply(this, arguments);
@@ -27,6 +33,19 @@ odoo.define('customisable_t-shirt.customisable_t-shirt', (require) => {
             this.$('select[id="select-font-text"]').change();
             this.$('input[id="tshirt-custompicture"]').change();
             return def;
+        },
+
+        _onClickBtnSave: function () {
+            let node = document.getElementById('t-shirt-div');
+            domtoimage.toPng(node).then(function (dataURL) {
+                //console.log(dataURL);
+                document.getElementById("custom_image").value = dataURL;
+                document.getElementById("btn-save").type = "submit";
+                document.getElementById("btn-save").click();
+
+            }).catch(function (e) {
+                console.error('error', e);
+            });
         },
 
         _onClickClearAll: function () {
@@ -43,9 +62,18 @@ odoo.define('customisable_t-shirt.customisable_t-shirt', (require) => {
             this.canvas.renderAll();
         },
 
+        _onClickBtnBold: function () {
+            this.canvas.getActiveObject().fontWeight === 'normal' ? this.canvas.getActiveObject().set('fontWeight', 'bold') : this.canvas.getActiveObject().set('fontWeight', 'normal');
+            this.canvas.renderAll();
+        },
+
+        _onClickBtnItalic: function () {
+            this.canvas.getActiveObject().fontStyle === 'normal' ? this.canvas.getActiveObject().set('fontStyle', 'italic') : this.canvas.getActiveObject().set('fontStyle', 'normal');
+            this.canvas.renderAll();
+        },
+
         _onClickBtnText: function () {
-            let text = document.getElementById("input-text").value;
-            this.text = new fabric.Text(text);
+            this.text = new fabric.IText("Saisir \nTexte");
             this.canvas.add(this.text);
             this.canvas.renderAll();
         },
@@ -82,9 +110,9 @@ odoo.define('customisable_t-shirt.customisable_t-shirt', (require) => {
 
         _onChangeCustomPicture: function () {
             let canvas = this.canvas;
-            if (!this.value) {
-                canvas.clear();
-            }
+            // if (!this.value) {
+            //     canvas.clear();
+            // }
             document.getElementById('tshirt-custompicture').addEventListener("change", function (e) {
                 let reader = new FileReader();
                 reader.onload = function (event) {
