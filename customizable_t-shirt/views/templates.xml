@@ -8,12 +8,124 @@
             <xpath expr="//script[last()]" position="after">
                 <script type="text/javascript" src="/customizable_t-shirt/static/lib/fabric.min.js"></script>
                 <script type="text/javascript" src="/customizable_t-shirt/static/lib/dom-to-image.min.js"></script>
+                <script type="text/javascript" src="/customizable_t-shirt/static/src/js/fabric_custom.js"></script>
                 <script type="text/javascript"
                         src="/customizable_t-shirt/static/src/js/customisable_t-shirt.js"></script>
+                <script
+                        type="text/javascript"
+                        src="/customizable_t-shirt/static/src/js/select_t-shirt.js"></script>
             </xpath>
         </template>
 
-        <template id="customizable_t-shirt_page" name="Customization T-shirt Page">
+        <template id="customizable_t-shirt.article" name="Customization Article Page">
+            <t t-call="website.layout">
+                <main id="main">
+                    <div class="oe_customisable_t-shirt" id="container">
+                        <article>
+                            <h1 itemprop="name" t-field="product.name">Product Name</h1>
+                            <div id="gridCon">
+                                <div id="prodImg">
+                                    <div id="gbts">
+                                        <button id="gestalt2" class="gstbtn">
+                                            <span id="gstxt">
+                                                <strong>Customize</strong>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <input type="hidden" id="product_images_index" value="0"/>
+                                    <input type="hidden" id="product_images_length"
+                                           t-att-value="len(product_images)"/>
+                                    <t t-foreach="product_images" t-as="prod_img">
+                                        <t t-if="prod_img_index == 0">
+                                            <span id="proi" class=".border" t-field="product_images[prod_img_index].image_1920"
+                                                  t-options="{'widget': 'image'}" t-attf-id="product_image_#{prod_img_index}"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span style="display: none" id="proi" class=".border" t-field="product_images[prod_img_index].image_1920"
+                                                  t-options="{'widget': 'image'}" t-attf-id="product_image_#{prod_img_index}"/>
+                                        </t>
+                                    </t>
+                                    <div id="left_arrow" class="left_arrow">
+                                        <img src="/customizable_t-shirt/static/img/left_arrow.svg"/>
+                                    </div>
+                                    <div id="right_arrow" class="right_arrow">
+                                        <img src="/customizable_t-shirt/static/img/right_arrow.svg"/>
+                                    </div>
+                                </div>
+                                <div id="designer">
+                                    <input type="hidden" id="creator_images_index" value="0"/>
+                                    <input type="hidden" id="creator_images_length"
+                                           t-att-value="len(creator_images)"/>
+                                    <t t-foreach="creator_images" t-as="crea_img">
+                                        <t t-if="crea_img_index == 0">
+                                            <span t-field="creator_images[crea_img_index].image_1920"
+                                                  t-options="{'widget': 'image'}"
+                                                  t-attf-id="creator_image_#{crea_img_index}"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span style="display: none"
+                                                  t-field="creator_images[crea_img_index].image_1920"
+                                                  t-options="{'widget': 'image'}"
+                                                  t-attf-id="creator_image_#{crea_img_index}"/>
+                                        </t>
+                                    </t>
+                                    <div id="can1">
+                                        <canvas id="hiddenCanvas"/>
+                                        <div class="canvas-container">
+                                            <canvas id="articleCanvas" class="lower-canvas" width="514" height="577"/>
+                                        </div>
+                                    </div>
+                                    <div id="gestalt5">
+                                        <button class="gstbtn1">Close</button>
+                                    </div>
+                                    <div id="left_designer_arrow" class="left_arrow">
+                                        <img src="/customizable_t-shirt/static/img/left_arrow.svg"/>
+                                    </div>
+                                    <div id="right_designer_arrow" class="right_arrow">
+                                        <img src="/customizable_t-shirt/static/img/right_arrow.svg"/>
+                                    </div>
+                                </div>
+
+                                <div id="inbasket" style="display:flex;">
+                                    <label for="image-loader">Upload your own design:</label>
+                                    <input type="file" id="image-loader" value="Import file"/>
+                                    <br/>
+                                    <a id="btn-text" class="btn btn-light"><i class="fa fa-font"/></a>
+                                    <a id="btn-bold" class="btn btn-light"><i class="fa fa-bold"/></a>
+                                    <a id="btn-italic" class="btn btn-light"><i class="fa fa-italic"/></a>
+                                    <br/>
+                                    <input id="input-colour" type="color"/>
+                                    <a id="btn-colour" class="btn btn-primary ml-2">Add Colour</a>
+                                    <br/>
+                                    <label for="select-font-text">Change font:</label>
+                                    <select id="select-font-text">
+                                        <option value="">Select one of our fonts ...</option>
+                                        <option value="Arial">Arial</option>
+                                        <option value="Times New Roman">Times New Roman</option>
+                                        <option value="Helvetica">Helvetica</option>
+                                        <option value="Tahoma">Tahoma</option>
+                                        <option value="Garamond">Garamond</option>
+                                    </select>
+                                    <div class="btn-group">
+                                        <a id="btn-clear-all" class="btn btn-primary ml-2">Clear</a>
+                                        <!--                                <a id="btn-clear-selected" class="btn btn-primary ml-2">Clear selected object</a>-->
+                                    </div>
+                                    <br/>
+                                    <form action="/shop/creator/save_image/" method="POST">
+                                        <input type="hidden" id="custom_image" name="custom_image"></input>
+                                        <input type="hidden" t-att-value="product.id" id="product_id"
+                                               name="product_id"></input>
+                                        <input id="btn-save" type="button" value="save as PNG"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </main>
+            </t>
+        </template>
+
+        <template id="customizable_t-shirt.customizable_t-shirt_page" name="Customization T-shirt Page">
             <t t-call="website.layout">
                 <div id="wrap" class="js_sale">
                     <div class="row oe_customisable_t-shirt">
@@ -58,7 +170,7 @@
                             <form action="/shop/creator/save_image/" method="POST">
                                 <input type="hidden" id="custom_image" name="custom_image"></input>
                                 <input type="hidden" t-att-value="product.id" id="product_id" name="product_id"></input>
-<!--                                <input id="btn-save" type="button" value="save as PNG"/>-->
+                                <input id="btn-save" type="button" value="save as PNG"/>
                             </form>
                         </div>
                     </div>
@@ -76,6 +188,94 @@
                     </div>
                 </div>
             </div>
+        </template>
+
+        <template id="customizable_t-shirt.product" inherit_id="website_sale.product" name="Product">
+            <xpath expr="//t//t//div" position="attributes">
+                <attribute name="t-if">
+                    product.is_customizable == False
+                </attribute>
+            </xpath>
+            <xpath expr="//t//t//div" position="before">
+                <section t-if="product.is_customizable"
+                         t-attf-class="oe_select_t-shirt container py-2 oe_website_sale #{'discount' if combination_info['has_discounted_price'] else ''}"
+                         id="product_detail" t-att-data-view-track="view_track and '1' or '0'">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a t-att-href="keep(category=0)">Products</a>
+                                </li>
+                                <li t-if="category" class="breadcrumb-item">
+                                    <a t-att-href="keep('/shop/category/%s' % slug(category), category=0)"
+                                       t-field="category.name"/>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    <span t-field="product.name"/>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xl-8">
+                            <t t-call="website_sale.shop_product_carousel"/>
+                        </div>
+                        <div class="col-md-6 col-xl-4" id="product_details">
+                            <h1 itemprop="name" t-field="product.name">Product Name</h1>
+                            <form action="/shop/test" method="POST">
+                                <input type="hidden" id="product_qty_to_send" name="product_qty_to_send"></input>
+                                <input type="hidden" id="product_ids_to_send" name="product_ids_to_send"></input>
+                                <input type="hidden" t-att-value="product.id" id="product_id" name="product_id"></input>
+                                <input type="button" id="products_btn_send"
+                                       class="btn btn-primary" value="Add to Cart"/>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xl-8">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <t t-foreach="sizes" t-as="i">
+                                            <th><t t-esc="i.name"/></th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="color_size" t-as="i">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="i.name"/>
+                                                <div t-attf-style="width: 40px;height: 40px;border-radius: 20px;background: #{i.html_color}"/>
+                                            </td>
+                                            <t t-foreach="i_value" t-as="j">
+                                                <t t-if="j != ''">
+                                                    <td>
+                                                        <div class="col-xs-1">
+                                                            <b class="oe_price" style="white-space: nowrap;"
+                                                               t-esc="product.list_price + i.price_extra + j.price_extra"
+                                                               t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+
+                                                            <br/>
+                                                            <input class="tshirts_choices form-control"
+                                                                   type="number" min="0" t-att-product_id="i + j"/>
+                                                        </div>
+                                                    </td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td></td>
+                                                </t>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </xpath>
         </template>
     </data>
 </odoo>

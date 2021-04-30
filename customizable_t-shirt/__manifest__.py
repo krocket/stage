@@ -12,7 +12,8 @@
     'version': '1.0',
     'depends': ['website', 'website_sale'],
     'data': [
-        'views/sale_views.xml',
+        'security/ir.model.access.csv',
+        'views/product_template_views.xml',
         'views/templates.xml',
     ],
     'installable': True,
