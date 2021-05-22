@@ -1,0 +1,133 @@
+.oe_main {
+    display: flex;
+    justify-content: center;
+}
+
+.oe_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oe_article_image {
+    position: relative;
+    width: 516px;
+    height: 646px;
+}
+
+.oe_article_basket {
+    position: relative;
+    width: 516px;
+    height: 646px;
+    border: solid 1px lightgrey;
+    display: flex;
+}
+
+.oe_prod {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: solid 1px lightgrey;
+    display: flex;
+    flex-direction: column;
+}
+
+.oe_swap_mode {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.gstbtn {
+    top: 98px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: normal;
+    padding: 7px;
+    text-decoration: none;
+    background: black;
+    border: none;
+    font-size: 14px;
+}
+
+.gstbtn1 {
+    top: 98px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: #2F2F2F;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 7px;
+    text-decoration: none;
+    background: white;
+    border: 1px solid gray;
+}
+
+#gestalt5 {
+    width: auto;
+    height: auto;
+    display: block;
+    position: absolute;
+    direction: rtl;
+    margin-right: 5px;
+    right: 0;
+    top: 0;
+}
+
+.can1 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+}
+
+.oe_design_img {
+    z-index: auto;
+    display: none;
+}
+
+.oe_carousel_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oe_img_container {
+    position: relative;
+    width: 454px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oe_prod_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oe_arrow img {
+    cursor: pointer;
+    width: 30px;
+}
+
+#oe_prod_info {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#oe_design_info {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+}

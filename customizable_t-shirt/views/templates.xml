@@ -4,99 +4,132 @@
         <template id="assets_frontend" inherit_id="website.assets_frontend">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/customizable_t-shirt/static/src/css/customisable_t-shirt.css"/>
+                <link rel="stylesheet" href="/customizable_t-shirt/static/src/css/creator.css"/>
             </xpath>
             <xpath expr="//script[last()]" position="after">
                 <script type="text/javascript" src="/customizable_t-shirt/static/lib/fabric.min.js"></script>
                 <script type="text/javascript" src="/customizable_t-shirt/static/lib/dom-to-image.min.js"></script>
-                <script type="text/javascript" src="/customizable_t-shirt/static/src/js/fabric_custom.js"></script>
                 <script type="text/javascript"
                         src="/customizable_t-shirt/static/src/js/customisable_t-shirt.js"></script>
-                <script
-                        type="text/javascript"
+                <script type="text/javascript"
                         src="/customizable_t-shirt/static/src/js/select_t-shirt.js"></script>
             </xpath>
         </template>
 
         <template id="customizable_t-shirt.article" name="Customization Article Page">
             <t t-call="website.layout">
-                <main id="main">
-                    <div class="oe_customisable_t-shirt" id="container">
-                        <article>
-                            <h1 itemprop="name" t-field="product.name">Product Name</h1>
-                            <div id="gridCon">
-                                <div id="prodImg">
-                                    <div id="gbts">
-                                        <button id="gestalt2" class="gstbtn">
-                                            <span id="gstxt">
-                                                <strong>Customize</strong>
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <input type="hidden" id="product_images_index" value="0"/>
-                                    <input type="hidden" id="product_images_length"
-                                           t-att-value="len(product_images)"/>
-                                    <t t-foreach="product_images" t-as="prod_img">
-                                        <t t-if="prod_img_index == 0">
-                                            <span id="proi" class=".border" t-field="product_images[prod_img_index].image_1920"
-                                                  t-options="{'widget': 'image'}" t-attf-id="product_image_#{prod_img_index}"/>
-                                        </t>
-                                        <t t-else="">
-                                            <span style="display: none" id="proi" class=".border" t-field="product_images[prod_img_index].image_1920"
-                                                  t-options="{'widget': 'image'}" t-attf-id="product_image_#{prod_img_index}"/>
-                                        </t>
-                                    </t>
-                                    <div id="left_arrow" class="left_arrow">
+                <div class="oe_main oe_customisable_t-shirt">
+                    <div class="oe_container">
+                        <div class="oe_article_image">
+                            <div class="oe_prod">
+                                <div class="oe_swap_mode">
+                                    <button id="gestalt2" class="gstbtn">
+                                        <span id="gstxt">
+                                            <strong>Customize</strong>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="oe_carousel_img">
+                                    <div id="left_arrow" class="oe_arrow">
                                         <img src="/customizable_t-shirt/static/img/left_arrow.svg"/>
                                     </div>
-                                    <div id="right_arrow" class="right_arrow">
+                                    <div class="oe_img_container">
+                                        <input type="hidden" id="product_images_index" value="0"/>
+                                        <input type="hidden" id="product_images_length"
+                                               t-att-value="len(product_images)"/>
+                                        <t t-foreach="product_images" t-as="prod_img">
+                                            <t t-if="prod_img_index == 0">
+                                                <span
+                                                        t-field="product_images[prod_img_index].image_1920"
+                                                        t-options="{'widget': 'image'}"
+                                                        t-attf-id="product_image_#{prod_img_index}"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span style="display: none"
+                                                      t-field="product_images[prod_img_index].image_1920"
+                                                      t-options="{'widget': 'image'}"
+                                                      t-attf-id="product_image_#{prod_img_index}"/>
+                                            </t>
+                                        </t>
+                                    </div>
+                                    <div id="right_arrow" class="oe_arrow">
                                         <img src="/customizable_t-shirt/static/img/right_arrow.svg"/>
                                     </div>
                                 </div>
-                                <div id="designer">
+                            </div>
+                            <div class="oe_prod oe_design_img">
+                                <div class="oe_swap_mode">
+                                    <button class="gstbtn1">Close</button>
+                                </div>
+                                <div class="oe_carousel_img">
+                                    <div id="left_designer_arrow" class="oe_arrow">
+                                        <img src="/customizable_t-shirt/static/img/left_arrow.svg"/>
+                                    </div>
                                     <input type="hidden" id="creator_images_index" value="0"/>
                                     <input type="hidden" id="creator_images_length"
                                            t-att-value="len(creator_images)"/>
                                     <t t-foreach="creator_images" t-as="crea_img">
                                         <t t-if="crea_img_index == 0">
-                                            <span t-field="creator_images[crea_img_index].image_1920"
-                                                  t-options="{'widget': 'image'}"
-                                                  t-attf-id="creator_image_#{crea_img_index}"/>
+                                            <div class="oe_img_container" t-attf-id="img_container_#{crea_img_index}">
+                                                <input type="hidden" t-attf-id="crea_img_#{crea_img_index}"
+                                                       t-att-value="crea_img.id"/>
+                                                <span t-field="creator_images[crea_img_index].image_1920"
+                                                      t-options="{'widget': 'image'}"/>
+                                                <div class="can1">
+                                                    <canvas t-attf-id="articleCanvas_#{crea_img_index}"
+                                                            class="lower-canvas" width="454"
+                                                            height="600"/>
+                                                </div>
+                                            </div>
                                         </t>
                                         <t t-else="">
-                                            <span style="display: none"
-                                                  t-field="creator_images[crea_img_index].image_1920"
-                                                  t-options="{'widget': 'image'}"
-                                                  t-attf-id="creator_image_#{crea_img_index}"/>
+                                            <div class="oe_img_container" style="display:none;"
+                                                 t-attf-id="img_container_#{crea_img_index}">
+                                                <input type="hidden" t-attf-id="crea_img_#{crea_img_index}"
+                                                       t-att-value="crea_img.id"/>
+                                                <span t-field="creator_images[crea_img_index].image_1920"
+                                                      t-options="{'widget': 'image'}"/>
+                                                <div class="can1">
+                                                    <canvas t-attf-id="articleCanvas_#{crea_img_index}"
+                                                            class="lower-canvas" width="454"
+                                                            height="600"/>
+                                                </div>
+                                            </div>
                                         </t>
                                     </t>
-                                    <div id="can1">
-                                        <canvas id="hiddenCanvas"/>
-                                        <div class="canvas-container">
-                                            <canvas id="articleCanvas" class="lower-canvas" width="514" height="577"/>
-                                        </div>
-                                    </div>
-                                    <div id="gestalt5">
-                                        <button class="gstbtn1">Close</button>
-                                    </div>
-                                    <div id="left_designer_arrow" class="left_arrow">
-                                        <img src="/customizable_t-shirt/static/img/left_arrow.svg"/>
-                                    </div>
-                                    <div id="right_designer_arrow" class="right_arrow">
+                                    <div id="right_designer_arrow" class="oe_arrow">
                                         <img src="/customizable_t-shirt/static/img/right_arrow.svg"/>
                                     </div>
                                 </div>
-
-                                <div id="inbasket" style="display:flex;">
-                                    <label for="image-loader">Upload your own design:</label>
-                                    <input type="file" id="image-loader" value="Import file"/>
-                                    <br/>
+                            </div>
+                        </div>
+                        <div class="oe_article_basket">
+                            <div id="oe_prod_info">
+                                <h1 itemprop="name" t-field="product.name">Product Name</h1>
+                                <form action="/shop/creator/save_image/" method="POST">
+                                    <t t-foreach="creator_images" t-as="crea_img">
+                                        <input type="hidden" t-attf-id="img_to_send_#{crea_img_index}"
+                                               t-att-name="crea_img.name"/>
+                                    </t>
+                                    <input type="hidden" t-att-value="product.id" id="product_id"
+                                           name="product_id"></input>
+                                    <input id="btn-save" type="button" value="save as PNG"/>
+                                </form>
+                            </div>
+                            <div id="oe_design_info">
+                                <div>
+                                    <label for="oe_image_loader">Upload your own design:</label>
+                                    <input type="file" id="oe_image_loader" value="Import file"/>
+                                </div>
+                                <div>
+                                    <textarea id="textarea" maxlength="1000"/>
                                     <a id="btn-text" class="btn btn-light"><i class="fa fa-font"/></a>
                                     <a id="btn-bold" class="btn btn-light"><i class="fa fa-bold"/></a>
                                     <a id="btn-italic" class="btn btn-light"><i class="fa fa-italic"/></a>
-                                    <br/>
                                     <input id="input-colour" type="color"/>
                                     <a id="btn-colour" class="btn btn-primary ml-2">Add Colour</a>
-                                    <br/>
+                                </div>
+                                <div>
                                     <label for="select-font-text">Change font:</label>
                                     <select id="select-font-text">
                                         <option value="">Select one of our fonts ...</option>
@@ -106,88 +139,12 @@
                                         <option value="Tahoma">Tahoma</option>
                                         <option value="Garamond">Garamond</option>
                                     </select>
-                                    <div class="btn-group">
-                                        <a id="btn-clear-all" class="btn btn-primary ml-2">Clear</a>
-                                        <!--                                <a id="btn-clear-selected" class="btn btn-primary ml-2">Clear selected object</a>-->
-                                    </div>
-                                    <br/>
-                                    <form action="/shop/creator/save_image/" method="POST">
-                                        <input type="hidden" id="custom_image" name="custom_image"></input>
-                                        <input type="hidden" t-att-value="product.id" id="product_id"
-                                               name="product_id"></input>
-                                        <input id="btn-save" type="button" value="save as PNG"/>
-                                    </form>
                                 </div>
                             </div>
-                        </article>
-                    </div>
-                </main>
-            </t>
-        </template>
-
-        <template id="customizable_t-shirt.customizable_t-shirt_page" name="Customization T-shirt Page">
-            <t t-call="website.layout">
-                <div id="wrap" class="js_sale">
-                    <div class="row oe_customisable_t-shirt">
-                        <div class="col-md-6 col-xl-8">
-                            <t t-call="customizable_t-shirt.customisable_t-shirt"></t>
-                        </div>
-                        <div class="col-md-6 col-xl-4">
-                            <h1 itemprop="name" t-field="product.name">Product Name</h1>
-                            <label for="tshirt-design">T-Shirt Design:</label>
-                            <select id="tshirt-design">
-                                <option value="">Select one of our designs ...</option>
-                                <option value="https://cdn.ourcodeworld.com/public-media/gallery/gallery-5d5b0e95d294c.png">
-                                    Batman</option>
-                                <option value="/customizable_t-shirt/static/img/batman.png">Batman</option>
-                            </select>
-                            <br/>
-                            <label for="tshirt-custompicture">Upload your own design:</label>
-                            <input type="file" id="tshirt-custompicture"/>
-                            <br/>
-                            <!--                            <input id="input-text" type="text" placeholder="Entrez un texte"/>-->
-                            <a id="btn-text" class="btn btn-light"><i class="fa fa-font"/></a>
-                            <a id="btn-bold" class="btn btn-light"><i class="fa fa-bold"/></a>
-                            <a id="btn-italic" class="btn btn-light"><i class="fa fa-italic"/></a>
-                            <br/>
-                            <input id="input-colour" type="color"/>
-                            <a id="btn-colour" class="btn btn-primary ml-2">Add Colour</a>
-                            <br/>
-                            <label for="select-font-text">Change font:</label>
-                            <select id="select-font-text">
-                                <option value="">Select one of our fonts ...</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                                <option value="Helvetica">Helvetica</option>
-                                <option value="Tahoma">Tahoma</option>
-                                <option value="Garamond">Garamond</option>
-                            </select>
-                            <div class="btn-group">
-                                <a id="btn-clear-all" class="btn btn-primary ml-2">Clear</a>
-                                <!--                                <a id="btn-clear-selected" class="btn btn-primary ml-2">Clear selected object</a>-->
-                            </div>
-                            <br/>
-                            <form action="/shop/creator/save_image/" method="POST">
-                                <input type="hidden" id="custom_image" name="custom_image"></input>
-                                <input type="hidden" t-att-value="product.id" id="product_id" name="product_id"></input>
-                                <input id="btn-save" type="button" value="save as PNG"/>
-                            </form>
                         </div>
                     </div>
                 </div>
-
             </t>
-        </template>
-
-        <template id="customizable_t-shirt.customisable_t-shirt" name="Customizable T-shirt">
-            <div id="t-shirt-div">
-                <span t-field="product.image_1920" t-options="{'widget': 'image'}"/>
-                <div id="drawingArea" class="drawing-area">
-                    <div class="canvas-container">
-                        <canvas id="tshirt-canvas" width="200" height="400"></canvas>
-                    </div>
-                </div>
-            </div>
         </template>
 
         <template id="customizable_t-shirt.product" inherit_id="website_sale.product" name="Product">

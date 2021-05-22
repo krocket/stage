@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, _
+from odoo import api, models, fields, _
 from odoo.http import request
 from odoo.exceptions import UserError, ValidationError
 
@@ -9,7 +9,7 @@ class SaleOrderInherit(models.Model):
     _inherit = "sale.order"
 
     def _cart_update_t_shirt(self, product_id=None, line_id=None, add_qty=0, set_qty=0, received_combination=None,
-                             **kwargs):
+                             sale_order_line_images=None, **kwargs):
         """ Add or set product quantity, add_qty can be negative """
         self.ensure_one()
         product_context = dict(self.env.context)
@@ -158,6 +158,44 @@ class SaleOrderInherit(models.Model):
             # - linked_line_id
             order_line.name = order_line.get_sale_order_line_multiline_description_sale(product)
 
-        option_lines = self.order_line.filtered(lambda l: l.linked_line_id.id == order_line.id)
+        if sale_order_line_images:
+            for x, y in sale_order_line_images.items():
+                SaleOrderLineSudo.sale_order_line_creator_image_ids.create(
+                    {'name': x, 'image_1920': y, 'sale_order_line_id': order_line.id})
 
+            # SaleOrderLineSudo.image_1920 = sale_order_line_image
+
+        option_lines = self.order_line.filtered(lambda l: l.linked_line_id.id == order_line.id)
         return {'line_id': order_line.id, 'quantity': quantity, 'option_ids': list(set(option_lines.ids))}
+
+
+class SaleOrderLineInherit(models.Model):
+    _inherit = "sale.order.line"
+
+    image_1920 = fields.Image("Image")
+    is_creator = fields.Boolean(related='product_template_id.is_creator')
+    sale_order_line_creator_image_ids = fields.One2many('sale.order.line.creator.image', 'sale_order_line_id',
+                                                        string="Extra creator content", copy=True)
+
+
+class SaleOrderLineCreatorImage(models.Model):
+    _name = 'sale.order.line.creator.image'
+    _description = 'Sales Order Line Creator Image'
+    _inherit = ['image.mixin']
+    _order = 'sequence, id'
+
+    name = fields.Char("Name", required=True)
+    sequence = fields.Integer(default=10, index=True)
+
+    image_1920 = fields.Image(required=True)
+    sale_order_line_id = fields.Many2one('sale.order.line', "Sales Order Line", index=True, ondelete='cascade')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        context = self.with_context({k: v for k, v in self.env.context.items()})
+
+        images = []
+        for el in vals_list:
+            images.append(el)
+
+        return super(SaleOrderLineCreatorImage, context).create(images)

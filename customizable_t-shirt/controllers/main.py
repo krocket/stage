@@ -50,42 +50,53 @@ class WebsiteSaleInherit(WebsiteSale):
     def product(self, product, category='', search='', **kwargs):
         if not product.can_access_from_current_website():
             raise NotFound()
-        attributes = product.valid_product_template_attribute_line_ids
-        sizes = []
-        for i in attributes:
-            for j in i.value_ids:
-                if not i.attribute_id.display_type == 'color':
-                    sizes.append(j)
-        product_colors = []
-        product_variants = []
-        for product_variant in product.product_variant_ids:
-            for variant in product_variant.product_template_attribute_value_ids:
-                if variant.display_type == 'color':
-                    if not product_colors.__contains__(variant):
-                        product_colors.append(variant)
-                else:
-                    for size in sizes:
-                        if not variant.name != size.name:
-                            product_variants.append(variant)
-        color_size = {}
-        for color in product_colors:
-            i = 0
-            tab = []
-            while i < len(sizes):
-                if product_variants[0].name != sizes[i].name:
-                    tab.append('')
-                    i += 1
-                else:
-                    # rajouter à product_variants[0] un .name pour montrer qu'on récupère bien les bonnes valeurs
-                    tab.append(product_variants[0])
-                    product_variants.pop(0)
-                    i += 1
-            color_size.update({color: tab})
-        print(color_size)
+        if product.is_customizable:
+            attributes = product.valid_product_template_attribute_line_ids
+            sizes = []
+            for i in attributes:
+                for j in i.value_ids:
+                    if not i.attribute_id.display_type == 'color':
+                        sizes.append(j)
+            product_colors = []
+            product_variants = []
+            for product_variant in product.product_variant_ids:
+                for variant in product_variant.product_template_attribute_value_ids:
+                    if variant.display_type == 'color':
+                        if not product_colors.__contains__(variant):
+                            product_colors.append(variant)
+                    else:
+                        for size in sizes:
+                            if not variant.name != size.name:
+                                product_variants.append(variant)
+            color_size = {}
+            for color in product_colors:
+                i = 0
+                tab = []
+                while i < len(sizes):
+                    if product_variants[0].name != sizes[i].name:
+                        tab.append('')
+                        i += 1
+                    else:
+                        # rajouter à product_variants[0] un .name pour montrer qu'on récupère bien les bonnes valeurs
+                        tab.append(product_variants[0])
+                        product_variants.pop(0)
+                        i += 1
+                color_size.update({color: tab})
 
-        return request.render("website_sale.product",
-                              self._prepare_product_values_shirt(product, category, search, sizes, color_size,
-                                                                 **kwargs))
+            return request.render("website_sale.product",
+                                  self._prepare_product_values_shirt(product, category, search, sizes, color_size,
+                                                                     **kwargs))
+        if product.is_creator:
+            product_images = list(product.product_template_image_ids)
+            product_images.insert(0, product)
+            render_values = {
+                'product': product,
+                'product_images': product_images,
+                'creator_images': list(product.product_template_creator_image_ids)
+            }
+            # return request.render("customizable_t-shirt.customizable_t-shirt_page", render_values)
+            return request.render("customizable_t-shirt.article", render_values)
+        return super(WebsiteSaleInherit, self).product(product, category='', search='', **kwargs)
 
     def _prepare_product_values_shirt(self, product, category, search, sizes, color_size, **kwargs):
         add_qty = int(kwargs.get('add_qty', 1))
@@ -151,20 +162,29 @@ class CustomizableTShirtController(http.Controller):
     @http.route(['/shop/creator/save_image/'], type="http", auth="public",
                 website=True, method=['POST'],
                 csrf=False)
-    def save_image(self, custom_image, product_id):
+    def save_image(self, product_id, **kwargs):
+        print(kwargs)
         product = request.env['product.template'].search([('id', '=', product_id)])
-        _, b64data = custom_image.split(',')
-        img_data = base64.b64decode(b64data)
-        product.image_1920 = base64.b64encode(img_data)
+        sale_order = request.website.sale_get_order(force_create=True)
+        images = {}
+        for x, y in kwargs.items():
+            if y:
+                _, b64data = y.split(',')
+                img_data = base64.b64decode(b64data)
+                images.update({x: base64.b64encode(img_data)})
+        sale_order._cart_update_t_shirt(
+            product_id=product.id,
+            add_qty=1,
+            sale_order_line_images=images
+        )
+        return request.redirect("/shop/cart")
 
-        return request.redirect("/shop")
-
-    # @http.route(['/shop/creator/save_image/'], type="http", auth="public",
-    #             website=True, method=['POST'],
-    #             csrf=False)
-    # def save_image(self, custom_image, product_id):
-    #     product = request.env['product.template'].search([('id', '=', product_id)])
-    #     _, b64data = custom_image.split(',')
-    #     img_data = base64.b64decode(b64data)
-    #     product.image_1920 = base64.b64encode(img_data)
-    #     return request.redirect("/shop")
+    @http.route(['/creator/get_values/<model("product.creator.image"):creator_image>'], type='json', auth="public",
+                methods=['POST'], website=True, )
+    def get_values(self, creator_image, **kw):
+        return dict(
+            print_width=creator_image.print_width,
+            print_height=creator_image.print_height,
+            print_top=creator_image.print_top,
+            print_left=creator_image.print_left,
+        )
